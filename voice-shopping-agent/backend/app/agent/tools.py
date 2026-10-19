@@ -120,3 +120,16 @@ class CancelOrder(BaseModel):
     order is still 'pending' or 'confirmed' — use this when the customer
     explicitly asks to cancel, never as a default action."""
     order_id: str = Field(..., description="UUID of the order, copied from a prior tool result")
+
+
+# --- retrieval-info ---------------------------------------------------------
+class RetrieveStoreInfo(BaseModel):
+    """Look up store policies, FAQs, shipping, returns, exchanges, or payment
+    info. Use this for any question about store policy — NOT for product
+    search."""
+    query: str = Field(..., description="The customer's question, in their own words")
+    topic: Optional[str] = Field(
+        None,
+        description="One of: 'returns', 'shipping', 'exchange', 'payment' — "
+                    "pick the closest match based on the question, or omit if unsure"
+    )
