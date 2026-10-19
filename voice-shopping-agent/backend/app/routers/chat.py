@@ -85,6 +85,9 @@ async def chat(payload: dict):
 
     state["messages"].append({"role": "user", "content": user_message})
 
+    # ISOLATION TEST
+    #state['messages'] = [{'role': 'user', 'content': user_message}]
+
     actions = []
     reply_text = ""
     MAX_TOOL_ITERATIONS = 3
