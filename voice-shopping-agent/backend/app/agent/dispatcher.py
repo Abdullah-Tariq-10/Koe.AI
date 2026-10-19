@@ -124,19 +124,21 @@ async def execute_tool(tool_name: str, raw_args: dict) -> dict:
 
             # --- Order Endpoints ---
             elif tool_name == "list_orders":
-                r = await client.get("/api/orders")
+                r = await client.get("/api/orders", params=params)
+
             elif tool_name == "get_order":
                 r = await client.get(f"/api/orders/{params['order_id']}")
+
             elif tool_name == "checkout":
-                r = await client.post("/api/orders/checkout", json=params)
+                r = await client.post("/api/orders", json=params)
+
             elif tool_name == "update_order_status":
-                r = await client.put(
-                    f"/api/orders/{params['order_id']}/status", json=params
-                )
+                order_id = params.pop("order_id")
+                r = await client.patch(f"/api/orders/{order_id}", json=params)
+
             elif tool_name == "cancel_order":
-                r = await client.post(
-                    f"/api/orders/{params['order_id']}/cancel"
-                )
+                r = await client.delete(f"/api/orders/{params['order_id']}")
+
             else:
                 return {"error": f"no dispatch logic for {tool_name}"}
 
